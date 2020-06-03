@@ -1,12 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ProjectsPage from './pages/projects/ProjectsPage';
 
 function App() {
   return (
-    <div className="App">
-      Hello world
-    </div>
+    <Router>
+      <Switch>
+        <Route exact={true} path="/projects">
+          <ProjectsPage />
+        </Route>
+        <Route path="/projects/:projectId">
+          <div>project IasdfasdfD</div>
+        </Route>
+        <Route path="/">
+          <ProjectsPage />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
