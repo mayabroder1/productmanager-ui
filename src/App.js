@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ProjectsPage from './pages/projects/ProjectsPage';
+import ProjectPage from './pages/project/ProjectPage';
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
           <ProjectsPage />
         </Route>
         <Route path="/projects/:projectId">
-          <div>project IasdfasdfD</div>
+          <ProjectPage />
         </Route>
         <Route path="/">
           <ProjectsPage />
