@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import {Link, useParams} from 'react-router-dom';
+import { getProject } from '../../data_service/projects';
+import ProjectTabs from './ProjectTabs';
 
-function ProjectPage() {
-  const [project, setProject] = useState(null);
+const Container = styled.div`
+
+`;
+
+const ProjectPage = () => {
+  const [project, setProject] = useState();
   const {projectId} = useParams();
-  useEffect(async () => {
-    let response = await fetch(`http://localhost:3005/projects/${projectId}`, {
-      mode: 'cors',
-      headers: {
-        'Access-Control-Allow-Origin':'*',
-        'Accept': '*/*'
-      }
-    });
-    let data = await response.json();
+  const fetchProject = async () => {
+    const data = await getProject(projectId);
     setProject(data);
+  };
+
+  useEffect(() => {
+    fetchProject();
   }, []);
+
   if (!project) {
     return <div>No project!</div>;
   }
+
+  const onProjectUpdate = () => {
+    fetchProject();
+  };
+
   return (
-    <div>
-     PROEJCT {project.title} !!!
-    </div>
+    <Container>
+      <h1>{project.name}</h1>
+      <ProjectTabs projectId={projectId} onProjectUpdate={onProjectUpdate} />
+    </Container>
   );
-}
+};
 
 export default ProjectPage;
