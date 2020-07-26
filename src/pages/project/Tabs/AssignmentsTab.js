@@ -192,22 +192,6 @@ export default () => {
               refreshData={fetchProjectTasks}
               requirements={requirements}
             />
-            {/*{*/}
-            {/*  editTaskContent === id*/}
-            {/*    ? (*/}
-            {/*      <div>*/}
-            {/*        <TextField onChange={onContentChanged} label="Name" defaultValue={updatingContent}/>*/}
-            {/*        <Button onClick={() => onContentUpdate(id)}>Update</Button>*/}
-            {/*      </div>*/}
-            {/*    )*/}
-            {/*    : (*/}
-            {/*      <div>*/}
-            {/*        {content}*/}
-            {/*        <Button onClick={() => onEditContent(id, content)}>Edit</Button>*/}
-            {/*        <Button onClick={() => onDeleteReq(id)}>Delete</Button>*/}
-            {/*      </div>*/}
-            {/*    )*/}
-            {/*}*/}
           </div>
         ))
       }
