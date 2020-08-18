@@ -17,7 +17,7 @@ export default function AddReqDialog({ onClose, requirements, selectedValue, ope
   };
 
   return (
-    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog onClose={() => handleClose(false)} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Choose requirement to add to task</DialogTitle>
       <List>
         {_.map(requirements, ({id, content}) => (

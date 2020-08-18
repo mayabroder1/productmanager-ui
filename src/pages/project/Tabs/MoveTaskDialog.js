@@ -17,7 +17,7 @@ export default function MoveTaskDialog({ onClose, tasks, selectedValue, open }) 
   };
 
   return (
-    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog onClose={() => handleClose(false)} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Choose target task</DialogTitle>
       <List>
         {_.map(tasks, ({id, content}) => (

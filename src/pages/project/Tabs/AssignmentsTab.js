@@ -8,7 +8,8 @@ import {
   moveProjectTask,
   updateProjectTaskContent,
   linkTaskToRequirement,
-  deleteTask
+  deleteTask,
+  createTask
 } from '../../../data_service/projects';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';
@@ -18,6 +19,7 @@ import Done from '@material-ui/icons/Done';
 import MoveTaskDialog from './MoveTaskDialog';
 import IconButton from '@material-ui/core/IconButton';
 import AddReqDialog from './AddReqDialog';
+import CreateTaskDialog from './CreateTaskDialog';
 
 const SubtreeContainer = styled.div`
   margin-left: ${({level}) => level * 15}px;
@@ -61,9 +63,11 @@ const TaskBox = ({task: {id, content, requirements: taskRequirements}, onMoveCli
   };
 
   const handleClose = async (reqId) => {
-    await linkTaskToRequirement(id, reqId);
     setAddReqOpen(false);
-    await refreshData();
+    if (reqId) {
+      await linkTaskToRequirement(id, reqId);
+      await refreshData();
+    }
   };
 
   const onDeleteClicked = async () => {
@@ -106,12 +110,10 @@ const TaskBox = ({task: {id, content, requirements: taskRequirements}, onMoveCli
                 </Requirement>
               ))
             }
-            <IconButton color="primary" component="span" onClick={onAddReq}>
-              <Add />
-            </IconButton>
           </div>
         )
       }
+      <Button onClick={onAddReq}>connect requirement</Button>
       <Button onClick={() => onMoveClicked(id)}>Move</Button>
       <Button onClick={onDeleteClicked}>Delete</Button>
       <AddReqDialog
@@ -159,28 +161,43 @@ export default () => {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
   const [taskToMove, setTaskToMove] = useState();
 
   const handleClose = async (targetTaskId) => {
     setOpen(false);
-    await moveProjectTask(taskToMove, targetTaskId);
-    fetchProjectTasks();
+    if (targetTaskId) {
+      await moveProjectTask(taskToMove, targetTaskId);
+      fetchProjectTasks();
+    }
   };
 
-  // const onDeleteReq = async (reqId) => {
-  //   await deleteProjectRequirement(reqId);
-  //   await fetchProjectRequirements();
-  // };
+  const handleCloseCreateTask = async (newTask) => {
+    setIsCreateTaskOpen(false);
+    if (newTask) {
+      await createTask(projectId, newTask);
+      fetchProjectTasks();
+    }
+  };
 
   const onMoveClicked = (taskId) => {
     setTaskToMove(taskId);
     setOpen(true);
   };
 
+  const onCreateTask = () => {
+    setIsCreateTaskOpen(true);
+
+  };
+
   const rootProjectTasks = _.filter(projectTasks, ({parentTaskId}) => parentTaskId === null);
   return (
     <div>
+      <IconButton color="primary" component="span" onClick={onCreateTask}>
+        <Add />
+        Create task
+      </IconButton>
       {
         _.map(rootProjectTasks, (task) => (
           <div>
@@ -200,6 +217,12 @@ export default () => {
         tasks={projectTasks}
         open={open}
         onClose={handleClose}
+      />
+      <CreateTaskDialog
+        open={isCreateTaskOpen}
+        onClose={handleCloseCreateTask}
+        tasks={projectTasks}
+        requirements={requirements}
       />
     </div>
   );

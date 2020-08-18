@@ -19,12 +19,12 @@ export default ({onProjectUpdate}) => {
     })();
   }, []);
 
-
   const onProjectNameChanged = (event) => {
     setProjectName(event.target.value);
   };
 
   const onChangeProjectClicked = async () => {
+    console.log('debug asdf', project);
     const updatedProject = await updateProject({...project, name: projectName});
     onProjectUpdate();
     setProject(updatedProject);
